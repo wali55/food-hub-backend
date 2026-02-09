@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AuthUser {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  user          User?
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  AuthUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  phone    String   @unique
+  isActive Boolean  @default(true)
+  address  String
+  role     UserRole @default(CUSTOMER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  auth     AuthUser         @relation(fields: [id], references: [id], onDelete: Cascade)
+  provider ProviderProfile?
+  orders   Order[]
+  reviews  Review[]
+}
+
+model ProviderProfile {
+  id             String   @id @default(uuid())
+  restaurantName String
+  address        String
+  meals          Meal[]
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Category {
+  id    String @id @default(uuid())
+  title String
+  meals Meal[]
+}
+
+model Meal {
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  price       Decimal         @db.Decimal(10, 2)
+  dietaryPref DietaryPref     @default(ALL)
+  providerId  String
+  provider    ProviderProfile @relation(fields: [providerId], references: [id])
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id])
+  orders      MealOrder[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Order {
+  id              String       @id @default(uuid())
+  status          OrderStatus  @default(PLACED)
+  deliveryType    DeliveryType @default(COD)
+  totalPrice      Decimal      @db.Decimal(10, 2)
+  deliveryAddress String
+  meals           MealOrder[]
+  userId          String       @unique
+  user            User         @relation(fields: [userId], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MealOrder {
+  id       String @id @default(uuid())
+  mealId   String
+  orderId  String
+  quantity Int    @default(1)
+
+  meal  Meal  @relation(fields: [mealId], references: [id])
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@unique([mealId, orderId])
+}
+
+enum UserRole {
+  ADMIN
+  PROVIDER
+  CUSTOMER
+}
+
+enum DietaryPref {
+  ALL
+  VEGETARIAN
+  VEGAN
+}
+
+enum OrderStatus {
+  PLACED
+  CANCELLED
+  PREPARING
+  READY
+  DELIVERED
+}
+
+enum DeliveryType {
+  COD
+}
