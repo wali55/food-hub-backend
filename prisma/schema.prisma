@@ -15,7 +15,7 @@ model AuthUser {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  user          User?
+  user          AppUser?
   sessions      Session[]
   accounts      Account[]
 
@@ -71,7 +71,7 @@ model Verification {
   @@map("verification")
 }
 
-model User {
+model AppUser {
   id       String   @id @default(uuid())
   name     String
   email    String   @unique
@@ -95,7 +95,7 @@ model ProviderProfile {
   address        String
   meals          Meal[]
   userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id])
+  user           AppUser     @relation(fields: [userId], references: [id])
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -129,7 +129,7 @@ model Order {
   deliveryAddress String
   meals           MealOrder[]
   userId          String       @unique
-  user            User         @relation(fields: [userId], references: [id])
+  user            AppUser         @relation(fields: [userId], references: [id])
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 }
@@ -138,7 +138,7 @@ model Review {
   id        String   @id @default(uuid())
   content   String
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      AppUser     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
