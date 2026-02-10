@@ -2,7 +2,9 @@ import express, { Application } from "express";
 import cors from "cors";
 import errorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
-import authRouter from "./modules/auth/auth.route"
+import authRouter from "./modules/auth/auth.route";
+import categoryRouter from "./modules/category/category.route";
+import mealRouter from "./modules/meal/meal.route"
 
 const app: Application = express();
 
@@ -17,6 +19,8 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/meals", mealRouter);
 
 app.use(notFound)
 app.use(errorHandler);
