@@ -60,7 +60,7 @@ const login = async (user: LoginProps) => {
     delete result.hashedPassword;
 
     const token = jwt.sign(
-        { name: result.name, email: result.email, role: result.role },
+        { id: result.id, name: result.name, email: result.email, role: result.role },
         process.env.JWT_SECRET as string,
         { expiresIn: "1d" }
     );
@@ -74,6 +74,10 @@ const getCurrentUser = async (id: string) => {
             id
         }
     })
+
+    //@ts-ignore
+    delete result.hashedPassword;
+    
     return result;
 }
 

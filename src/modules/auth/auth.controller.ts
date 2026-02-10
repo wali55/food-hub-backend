@@ -37,6 +37,7 @@ const login = async (req: Request, res: Response) => {
 
 const getCurrentUser = async (req: Request, res: Response) => {
     try {
+        console.log("controller***:", req.user);
         if (!req.user) {
             return res.status(400).json({
             success: false,
