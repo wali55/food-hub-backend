@@ -10,6 +10,7 @@ type MealProps = {
 }
 
 const createMeal = async (meal: MealProps, providerId: string) => {
+    console.log("***ProviderId***", providerId);
     const result = await prisma.meal.create({
         data: {
             title: meal.title,
