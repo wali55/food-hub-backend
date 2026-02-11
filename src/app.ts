@@ -1,5 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
 import authRouter from "./modules/auth/auth.route";
@@ -10,8 +11,10 @@ import providerProfileRouter from "./modules/providerProfile/providerProfile.rou
 const app: Application = express();
 
 app.use(cors({
-    origin: process.env.APP_URL || "http://localhost:3000"
+    origin: process.env.APP_URL || "http://localhost:3000",
+    credentials: true
 }));
+app.use(cookieParser());
 
 app.use(express.json());
 

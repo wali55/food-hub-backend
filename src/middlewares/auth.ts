@@ -12,8 +12,7 @@ declare global {
 const auth = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const tokenStr = req.headers.authorization;
-      const token = tokenStr?.split(" ")[1];
+      const token = req.cookies.token;
 
       if (!token) {
         return res

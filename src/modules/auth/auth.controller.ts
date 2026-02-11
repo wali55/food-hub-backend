@@ -21,6 +21,14 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
     try {
         const result = await authService.login(req.body);
+
+        res.cookie('token', result.token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            maxAge: 3600000
+        });
+        
         return res.status(200).json({
             success: true,
             message: "User logged in successfully!",
@@ -40,9 +48,9 @@ const getCurrentUser = async (req: Request, res: Response) => {
         console.log("controller***:", req.user);
         if (!req.user) {
             return res.status(400).json({
-            success: false,
-            message: "User not found!"
-        })
+                success: false,
+                message: "User not found!"
+            })
         }
 
         const result = await authService.getCurrentUser(req.user.id);
