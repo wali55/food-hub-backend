@@ -1,4 +1,4 @@
-import { DietaryPref } from "../../../generated/prisma/enums";
+import { DietaryPref } from "../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 type MealProps = {

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import { UserRole } from "../../generated/prisma/enums"
 import { prisma } from "../lib/prisma"
+import { UserRole } from "../generated/prisma/enums";
 
 async function seedAdmin() {
     try {

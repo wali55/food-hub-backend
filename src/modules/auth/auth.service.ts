@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
-import { UserRole } from "../../../generated/prisma/enums";
 import jwt from "jsonwebtoken";
+import { UserRole } from "../../generated/prisma/enums";
 
 export type RegisterProps = {
     name: string;
