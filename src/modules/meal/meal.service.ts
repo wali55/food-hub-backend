@@ -36,6 +36,22 @@ const createMeal = async (meal: MealProps, userId: string) => {
     return result;
 }
 
+const getAllMeals = async () => {
+    const result = await prisma.meal.findMany();
+    return result;
+}
+
+const getMealById = async (id: string) => {
+    const result = await prisma.meal.findUnique({
+        where: {
+            id
+        }
+    });
+    return result;
+}
+
 export const mealService = {
-    createMeal
+    createMeal,
+    getAllMeals,
+    getMealById
 }
