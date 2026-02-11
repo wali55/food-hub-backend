@@ -56,11 +56,15 @@ const login = async (user: LoginProps) => {
         throw new Error("Invalid credentials!");
     }
 
+    if (!result.isActive) {
+        throw new Error("Inactive user cannot login!")
+    }
+
     //@ts-ignore
     delete result.hashedPassword;
 
     const token = jwt.sign(
-        { id: result.id, name: result.name, email: result.email, role: result.role },
+        { id: result.id, name: result.name, email: result.email, role: result.role, isActive: result.isActive },
         process.env.JWT_SECRET as string,
         { expiresIn: "1d" }
     );
