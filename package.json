@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npx prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsx watch src/server.ts",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts",
-    "build": "prisma generate && tsc",
+    "build": "npx prisma generate && tsc",
     "start": "node dist/server.js"
   },
   "keywords": [],
