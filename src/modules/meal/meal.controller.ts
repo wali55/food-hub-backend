@@ -10,7 +10,6 @@ const createMeal = async (req: Request, res: Response) => {
                 message: "Unauthorized. User not found!"
             })
         }
-        console.log("***ProviderId***", user.id);
         const result = await mealService.createMeal(req.body, user.id);
         return res.status(201).json({
             success: true,

@@ -9,8 +9,20 @@ type MealProps = {
     categoryId: string;
 }
 
-const createMeal = async (meal: MealProps, providerId: string) => {
-    console.log("***ProviderId***", providerId);
+const createMeal = async (meal: MealProps, userId: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        },
+        include: {
+            provider: true
+        }
+    })
+
+    if (!user) {
+        throw new Error("Could not found the provider and it's profile. Cannot create meal");
+    }
+
     const result = await prisma.meal.create({
         data: {
             title: meal.title,
@@ -18,7 +30,7 @@ const createMeal = async (meal: MealProps, providerId: string) => {
             price: meal.price,
             dietaryPref: meal.dietaryPref,
             categoryId: meal.categoryId,
-            providerId
+            providerId: user?.provider?.id!
         }
     })
     return result;

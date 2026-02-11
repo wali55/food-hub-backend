@@ -72,6 +72,9 @@ const getCurrentUser = async (id: string) => {
     const result = await prisma.user.findUnique({
         where: {
             id
+        },
+        include: {
+            provider: true
         }
     })
 
