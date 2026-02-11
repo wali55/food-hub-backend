@@ -8,6 +8,7 @@ import categoryRouter from "./modules/category/category.route";
 import mealRouter from "./modules/meal/meal.route";
 import providerProfileRouter from "./modules/providerProfile/providerProfile.route";
 import adminRouter from "./modules/admin/admin.route";
+import orderRouter from "./modules/order/order.route";
 
 const app: Application = express();
 
@@ -28,6 +29,7 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/meals", mealRouter);
 app.use("/api/v1/provider-profile", providerProfileRouter);
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/orders", orderRouter);
 
 app.use(notFound)
 app.use(errorHandler);
