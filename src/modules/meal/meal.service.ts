@@ -9,6 +9,14 @@ type MealProps = {
     categoryId: string;
 }
 
+type UpdateMealProps = {
+    title?: string;
+    description?: string;
+    price?: number;
+    dietaryPref?: DietaryPref;
+    categoryId?: string;
+}
+
 const createMeal = async (meal: MealProps, userId: string) => {
     const user = await prisma.user.findUnique({
         where: {
@@ -50,8 +58,29 @@ const getMealById = async (id: string) => {
     return result;
 }
 
+const updateMeal = async (meal: UpdateMealProps, id: string) => {
+    const result = await prisma.meal.update({
+        where: {
+            id
+        },
+        data: meal
+    })
+    return result;
+}
+
+const deleteMeal = async (id: string) => {
+    const result = await prisma.meal.delete({
+        where: {
+            id
+        }
+    })
+    return result;
+}
+
 export const mealService = {
     createMeal,
     getAllMeals,
-    getMealById
+    getMealById,
+    updateMeal,
+    deleteMeal
 }

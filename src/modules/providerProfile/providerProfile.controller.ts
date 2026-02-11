@@ -51,7 +51,26 @@ const getAllProviderProfiles = async (req: Request, res: Response) => {
     }
 }
 
+const getProviderProfileById = async (req: Request, res: Response) => {
+    try {
+        const {providerId} = req.params;
+        const result = await providerProfileService.getProviderProfileById(providerId as string);
+        return res.status(200).json({
+            success: true,
+            message: "Provider profile fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "Could not fetch provider profile!"
+        })
+    }
+}
+
 export const providerProfileController = {
     createProviderProfile,
-    getAllProviderProfiles
+    getAllProviderProfiles,
+    getProviderProfileById
 }
