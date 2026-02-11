@@ -5,6 +5,7 @@ import { providerProfileController } from "./providerProfile.controller";
 
 const router = express.Router();
 
+router.get("/", providerProfileController.getAllProviderProfiles);
 router.post("/", auth(UserRole.PROVIDER), providerProfileController.createProviderProfile);
 
 export default router;

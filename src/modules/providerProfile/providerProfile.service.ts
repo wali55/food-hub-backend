@@ -20,6 +20,22 @@ const createProviderProfile = async (providerProfile: CreateProviderProfileProps
     return result;
 }
 
+const getAllProviderProfiles = async () => {
+    const result = await prisma.providerProfile.findMany();
+    return result;
+}
+
+const getProviderProfileById = async (id: string) => {
+    const result = await prisma.providerProfile.findUnique({
+        where: {
+            id
+        }
+    });
+    return result;
+}
+
 export const providerProfileService = {
-    createProviderProfile
+    createProviderProfile,
+    getAllProviderProfiles,
+    getProviderProfileById
 }
