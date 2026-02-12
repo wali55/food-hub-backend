@@ -29,6 +29,9 @@ const getProviderProfileById = async (id: string) => {
     const result = await prisma.providerProfile.findUnique({
         where: {
             id
+        },
+        include: {
+            meals: true
         }
     });
     return result;
