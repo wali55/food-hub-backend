@@ -73,7 +73,7 @@ model Order {
 model Review {
   id        String   @id @default(uuid())
   content   String
-  userId    String   @unique
+  userId    String   
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -9,6 +9,7 @@ import mealRouter from "./modules/meal/meal.route";
 import providerProfileRouter from "./modules/providerProfile/providerProfile.route";
 import adminRouter from "./modules/admin/admin.route";
 import orderRouter from "./modules/order/order.route";
+import reviewRouter from "./modules/review/review.route";
 
 const app: Application = express();
 
@@ -30,6 +31,7 @@ app.use("/api/v1/meals", mealRouter);
 app.use("/api/v1/provider-profile", providerProfileRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 app.use(notFound)
 app.use(errorHandler);
