@@ -83,8 +83,28 @@ const updateOrderStatus = async (order: {status: OrderStatus},id: string) => {
   return result;
 }
 
+const getCustomerOrders = async (userId: string) => {
+  const result = await prisma.order.findMany({
+    where: {
+      userId
+    }
+  })
+  return result;
+}
+
+const getOrderById = async (id: string) => {
+  const result = await prisma.order.findUnique({
+    where: {
+      id
+    }
+  })
+  return result;
+}
+
 export const orderService = {
   createOrder,
   getProviderOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  getCustomerOrders,
+  getOrderById
 }

@@ -6,9 +6,9 @@ const createOrder = async (req: Request, res: Response) => {
         const user = req.user;
         if (!user) {
             return res.status(400).json({
-            success: false,
-            message: "Could not found user. Cannot create order"
-        })
+                success: false,
+                message: "Could not found user. Cannot create order"
+            })
         }
 
         const result = await orderService.createOrder(req.body, user.id);
@@ -31,9 +31,9 @@ const getProviderOrders = async (req: Request, res: Response) => {
         const user = req.user;
         if (!user) {
             return res.status(400).json({
-            success: false,
-            message: "Could not found user. Cannot fetch provider orders"
-        })
+                success: false,
+                message: "Could not found user. Cannot fetch provider orders"
+            })
         }
 
         const result = await orderService.getProviderOrders(user.id);
@@ -53,7 +53,7 @@ const getProviderOrders = async (req: Request, res: Response) => {
 
 const updateOrderStatus = async (req: Request, res: Response) => {
     try {
-        const {orderId} = req.params;
+        const { orderId } = req.params;
 
         const result = await orderService.updateOrderStatus(req.body, orderId as string);
         return res.status(200).json({
@@ -70,8 +70,54 @@ const updateOrderStatus = async (req: Request, res: Response) => {
     }
 }
 
+const getCustomerOrders = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "Could not found user. Cannot fetch customer orders"
+            })
+        }
+
+        const result = await orderService.getCustomerOrders(user.id as string);
+        return res.status(200).json({
+            success: true,
+            message: "Customer orders fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "Could not fetch customer orders!"
+        })
+    }
+}
+
+const getOrderById = async (req: Request, res: Response) => {
+    try {
+        const { orderId } = req.params;
+
+        const result = await orderService.getOrderById(orderId as string);
+        return res.status(200).json({
+            success: true,
+            message: "Order fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "Could not fetch order!"
+        })
+    }
+}
+
 export const orderController = {
     createOrder,
     getProviderOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    getCustomerOrders,
+    getOrderById
 }
