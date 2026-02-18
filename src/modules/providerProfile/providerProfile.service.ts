@@ -31,7 +31,25 @@ const getProviderProfileById = async (id: string) => {
             id
         },
         include: {
-            meals: true
+            meals: {
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    dietaryPref: true,
+                    price: true,
+                    category: {
+                        select: {
+                            title: true
+                        }
+                    },
+                    provider: {
+                        select: {
+                            restaurantName: true
+                        }
+                    }
+                }
+            }
         }
     });
     return result;
