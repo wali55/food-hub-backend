@@ -69,6 +69,18 @@ const getMealById = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      category: {
+        select: {
+          title: true,
+        },
+      },
+      provider: {
+        select: {
+          restaurantName: true,
+        },
+      },
+    },
   });
   return result;
 };
