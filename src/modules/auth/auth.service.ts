@@ -88,8 +88,23 @@ const getCurrentUser = async (id: string) => {
     return result;
 }
 
+const updateUser = async (user: {name?: string; phone?: string; address?: string}, id: string) => {
+    const result = await prisma.user.update({
+        where: {
+            id
+        },
+        data: user
+    })
+
+    //@ts-ignore
+    delete result.hashedPassword;
+    
+    return result;
+}
+
 export const authService = {
     register,
     login,
-    getCurrentUser
+    getCurrentUser,
+    updateUser
 }

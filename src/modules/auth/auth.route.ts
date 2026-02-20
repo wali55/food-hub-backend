@@ -6,6 +6,7 @@ import { UserRole } from "../../generated/prisma/enums";
 const router = express.Router();
 
 router.get("/me", auth(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.PROVIDER), authController.getCurrentUser);
+router.patch("/me", auth(UserRole.CUSTOMER), authController.updateUser);
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.post("/logout", authController.logout);

@@ -88,9 +88,34 @@ const getCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    const result = await authService.updateUser(req.body, req.user.id);
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully!",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Could not update user!",
+    });
+  }
+};
+
 export const authController = {
   register,
   login,
   getCurrentUser,
-  logout
+  logout,
+  updateUser
 };
