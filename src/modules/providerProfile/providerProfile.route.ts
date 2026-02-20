@@ -6,6 +6,7 @@ import { providerProfileController } from "./providerProfile.controller";
 const router = express.Router();
 
 router.get("/", providerProfileController.getAllProviderProfiles);
+router.get("/stats", auth(UserRole.PROVIDER), providerProfileController.getProviderStats);
 router.get("/:providerId", providerProfileController.getProviderProfileById);
 router.post("/", auth(UserRole.PROVIDER), providerProfileController.createProviderProfile);
 
