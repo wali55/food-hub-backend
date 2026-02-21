@@ -96,10 +96,35 @@ const deleteMeal = async (req: Request, res: Response) => {
     }
 }
 
+const getProviderMeals = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized. User not found!"
+            })
+        }
+        const result = await mealService.getProviderMeals(user.id);
+        return res.status(200).json({
+            success: true,
+            message: "Provider meals fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "Could not fetch provider meals!"
+        })
+    }
+}
+
 export const mealController = {
     createMeal,
     getAllMeals,
     getMealById,
     updateMeal,
-    deleteMeal
+    deleteMeal,
+    getProviderMeals
 }
