@@ -18,6 +18,23 @@ const getAllUsers = async (req: Request, res: Response) => {
     }
 }
 
+const getAdminStats = async (req: Request, res: Response) => {
+    try {
+        const result = await adminService.getAdminStats();
+        return res.status(200).json({
+            success: true,
+            message: "Stats fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "Could not fetch stats!"
+        })
+    }
+}
+
 const updateUserStatus = async (req: Request, res: Response) => {
     try {
         const {userId} = req.params;
@@ -36,7 +53,8 @@ const updateUserStatus = async (req: Request, res: Response) => {
     }
 }
 
-export const adminCotroller = {
+export const adminController = {
     getAllUsers,
-    updateUserStatus
+    updateUserStatus,
+    getAdminStats
 }
