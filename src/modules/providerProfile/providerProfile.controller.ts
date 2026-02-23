@@ -34,6 +34,38 @@ const createProviderProfile = async (req: Request, res: Response) => {
     }
 }
 
+const getCurrentProviderProfile = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found."
+            })
+        }
+
+        if (user.role !== UserRole.PROVIDER) {
+            return res.status(400).json({
+                success: false,
+                message: "User must be a provider."
+            })
+        }
+
+        const result = await providerProfileService.getCurrentProviderProfile(user.id);
+        return res.status(200).json({
+            success: true,
+            message: "Provider profile fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            success: false,
+            message: "Could not fetch provider profile!"
+        })
+    }
+}
+
 const getAllProviderProfiles = async (req: Request, res: Response) => {
     try {
         const result = await providerProfileService.getAllProviderProfiles();
@@ -105,5 +137,6 @@ export const providerProfileController = {
     createProviderProfile,
     getAllProviderProfiles,
     getProviderProfileById,
-    getProviderStats
+    getProviderStats,
+    getCurrentProviderProfile
 }

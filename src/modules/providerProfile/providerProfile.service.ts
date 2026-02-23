@@ -58,6 +58,24 @@ const getProviderProfileById = async (id: string) => {
   return result;
 };
 
+const getCurrentProviderProfile = async (userId: string) => {
+  const result = await prisma.providerProfile.findUnique({
+    where: {
+      userId
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          phone: true
+        }
+      }
+    }
+  });
+  return result;
+};
+
 const getProviderStats = async (userId: string) => {
   const result = await prisma.$transaction(async (tx) => {
     const provider = await tx.providerProfile.findUnique({
@@ -131,4 +149,5 @@ export const providerProfileService = {
   getAllProviderProfiles,
   getProviderProfileById,
   getProviderStats,
+  getCurrentProviderProfile
 };
