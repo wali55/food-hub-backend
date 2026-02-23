@@ -1,7 +1,13 @@
 import { prisma } from "../../lib/prisma"
 
-const getAllUsers = async () => {
-    const result = await prisma.user.findMany();
+const getAllUsers = async (userId: string) => {
+    const result = await prisma.user.findMany({
+        where: {
+            NOT: {
+                id: userId
+            }
+        }
+    });
     result.forEach((user) => {
         //@ts-ignore
         delete user.hashedPassword;

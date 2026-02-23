@@ -3,7 +3,14 @@ import { adminService } from "./admin.service";
 
 const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const result = await adminService.getAllUsers();
+        const user = req.user;
+        if (!user) {
+            return res.status(400).json({
+            success: false,
+            message: "Could not user!"
+        })
+        }
+        const result = await adminService.getAllUsers(user.id);
         return res.status(200).json({
             success: true,
             message: "Users fetched successfully!",
